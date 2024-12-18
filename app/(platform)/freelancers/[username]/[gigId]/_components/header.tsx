@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Clipboard, Home, Save, Star } from "lucide-react";
+import {  Home } from "lucide-react";
 import Link from "next/link";
 
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
+// import {
+//     Tooltip,
+//     TooltipContent,
+//     TooltipProvider,
+//     TooltipTrigger,
+// } from "@/components/ui/tooltip"
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";

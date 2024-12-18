@@ -10,7 +10,7 @@ import { Images } from "@/components/images";
 import { Description } from "@/components/description";
 import { Info } from "lucide-react";
 import { SellerDetails } from "./_components/seller-details";
-import { Reviews } from "../_components/reviews/reviews";
+// import { Reviews } from "../_components/reviews/reviews";
 import { AddReview } from "../_components/reviews/add-review";
 
 

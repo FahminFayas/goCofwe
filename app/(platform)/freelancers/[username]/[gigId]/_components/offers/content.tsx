@@ -33,9 +33,14 @@ export const Content = ({
             const url = await orderNow({ priceId: offer.stripePriceId, title: offer.title, sellerId });
             if (!url) throw new Error("Error: Stripe session error.");
             router.push(url);
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("An unknown error occurred.");
+            }
         }
+        
     }
 
     const handleSendMessage = () => {

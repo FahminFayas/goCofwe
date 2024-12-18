@@ -15,6 +15,10 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { useDebouncyEffect } from "use-debouncy";
 import { Color } from "@/types/canvas";
+type DebouncedPickerProps = {
+    color: string; // Assuming color is a hex string like "#ffffff"
+    onChange: (value: string) => void; // Callback function expecting a string
+};
 
 interface ColorPickerProps {
     value: string;
@@ -77,13 +81,13 @@ const CustomColorPicker = forwardRef<
     }
 );
 
-const DebouncedPicker = ({ color, onChange }: any) => {
-    const [value, setValue] = useState(color);
-  
+const DebouncedPicker = ({ color, onChange }: DebouncedPickerProps) => {
+    const [value, setValue] = useState<string>(color);
+
     useDebouncyEffect(() => onChange(value), 200, [value]);
-  
+
     return <HexColorPicker color={value} onChange={setValue} />;
-  };
+};
   
 
 CustomColorPicker.displayName = "ColorPicker";

@@ -20,7 +20,6 @@ import {
     Point,
     Side,
     XYWH,
-    Layer,
 } from "@/types/canvas";
 import {
     useHistory,

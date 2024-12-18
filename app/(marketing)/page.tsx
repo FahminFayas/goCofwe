@@ -45,7 +45,7 @@ const MarketingPage = () => {
             Collabrate, manage projects, and reach new productivity peaks. From high rises to the home office, the way your team works is unique—accomplish it all with Taskify.
         </div>
         <Button className="mt-6" size="lg" asChild>
-            <Link href="/freelancers">Go To Freelancer's Place</Link>
+            <Link href="/freelancers">Go To Freelancer&apos;s Place</Link>
         </Button>
     </div>
   );

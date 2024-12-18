@@ -7,11 +7,11 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel"
-import { Doc } from "@/convex/_generated/dataModel"
+// import { Doc } from "@/convex/_generated/dataModel"
 import { ImageWithUrlType } from "@/types"
 import Image from "next/image"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { MoreHorizontal, Trash2 } from "lucide-react"
+import { Trash2 } from "lucide-react"
 import { Actions } from "@/app/(platform)/freelancers/seller/[username]/manage-gigs/edit/[gigId]/_components/actions"
 import { useState } from "react"
 

@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { LayoutDashboardIcon, Star } from "lucide-react";
+// import { LayoutDashboardIcon, Star } from "lucide-react";
 import { Poppins } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 
 const font = Poppins({
     subsets: ["latin"],

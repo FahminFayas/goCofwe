@@ -8,7 +8,7 @@ import { Star } from "lucide-react"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const { format } = require('date-fns');
+import { format } from 'date-fns';
 
 interface SellerProps {
     seller: UserWithCountryType;

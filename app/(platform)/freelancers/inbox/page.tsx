@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { EmptyFavorites } from "../(dashboard)/_components/empty-favorites";
+// import { EmptyFavorites } from "../(dashboard)/_components/empty-favorites";
 // import useStoreUserEffect from "@/hooks/use-store-user-effect";
 
 const InboxPage = () => {

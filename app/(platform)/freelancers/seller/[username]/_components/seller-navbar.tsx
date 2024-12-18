@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { MessageCircle } from "lucide-react"
 import { UserButton } from "@clerk/nextjs"
-import { Loading } from "@/components/auth/loading"
+// import { Loading } from "@/components/auth/loading"
 import { useRouter } from "next/navigation"
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"

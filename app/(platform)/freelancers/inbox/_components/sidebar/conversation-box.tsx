@@ -1,9 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { format } from "date-fns";
-import clsx from "clsx";
+// import { format } from "date-fns";
+// import clsx from "clsx";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
@@ -13,7 +13,7 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface ConversationBoxProps {

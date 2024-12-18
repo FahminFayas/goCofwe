@@ -10,7 +10,7 @@ import {
     DropdownMenuTrigger,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator,
+    // DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
@@ -56,11 +56,12 @@ export const Actions = ({
                 {children}
             </DropdownMenuTrigger>
             <DropdownMenuContent
-                onClick={(e: any) => e.stopPropagation()}
-                side={side}
-                sideOffset={sideOffset}
-                className="w-60"
-            >
+    onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
+    side={side}
+    sideOffset={sideOffset}
+    className="w-60"
+>
+
                 <DropdownMenuItem
                     onClick={onCopyLink}
                     className="p-3 cursor-pointer"

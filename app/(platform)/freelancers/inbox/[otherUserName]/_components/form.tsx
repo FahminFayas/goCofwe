@@ -6,7 +6,6 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { useState } from "react";
 import {
     HiPaperAirplane,
-    HiPhoto
 } from "react-icons/hi2";
 
 interface FormProps {

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Doc } from "@/convex/_generated/dataModel";
+// import { Doc } from "@/convex/_generated/dataModel";
 import { ReviewFullType } from "@/types";
 import { formatDistanceToNow } from 'date-fns'; // Importing formatDistanceToNow function
 import { Star } from 'lucide-react'; // Importing Star component from Lucide
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { Card, CardContent } from '@/components/ui/card';
+// import { Card, CardContent } from '@/components/ui/card';
 
 interface ReviewBoxProps {
     review: ReviewFullType;

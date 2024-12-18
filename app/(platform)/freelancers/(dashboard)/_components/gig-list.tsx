@@ -5,8 +5,8 @@ import { useQuery } from "convex/react";
 import { EmptySearch } from "./empty-search";
 import { EmptyFavorites } from "./empty-favorites";
 import { GigCard } from "./gig-card";
-import { Loading } from "@/components/auth/loading";
-import { Doc, Id } from "@/convex/_generated/dataModel";
+// import { Loading } from "@/components/auth/loading";
+// import { Doc, Id } from "@/convex/_generated/dataModel";
 import { FullGigType } from "@/types";
 import { useEffect, useState } from "react";
 

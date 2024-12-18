@@ -4,7 +4,7 @@ import { Loading } from "@/components/auth/loading";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 // import { setStripeAccountSetupComplete } from "@/convex/stripe";
-import { useApiMutation } from "@/hooks/use-api-mutation";
+// import { useApiMutation } from "@/hooks/use-api-mutation";
 import { useAction } from "convex/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -26,10 +26,14 @@ const StripeAccountSetupComplete = ({ params }: StripeAccountSetupCompleteProps)
             try {
                 await update({ userId: params.userId as Id<"users"> });
                 router.push("/freelancers");
-            } catch (error: any) {
+            } catch (error: unknown) {
+                console.error(error);
+            
                 toast.error("Error saving your stripe payment processing", { duration: 10000 });
+            
                 router.push("/freelancers");
             }
+            
         }
         setStripeAccountSetupComplete();
     }, [update, params.userId, router]);

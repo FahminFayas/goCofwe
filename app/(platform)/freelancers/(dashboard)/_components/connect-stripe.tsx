@@ -1,10 +1,10 @@
 "use client";
 
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
-import { useAction, useConvexAuth, useMutation } from "convex/react";
+// import { Id } from "@/convex/_generated/dataModel";
+import { useAction } from "convex/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+// import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 

@@ -1,21 +1,21 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
+// import { MoreHorizontal } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+// import { Button } from "@/components/ui/button"
+// import {
+//     DropdownMenu,
+//     DropdownMenuContent,
+//     DropdownMenuItem,
+//     DropdownMenuLabel,
+//     DropdownMenuSeparator,
+//     DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu"
 import Image from "next/image"
 import Link from "next/link"
-import { useApiMutation } from "@/hooks/use-api-mutation"
-import { api } from "@/convex/_generated/api"
+// import { useApiMutation } from "@/hooks/use-api-mutation"
+// import { api } from "@/convex/_generated/api"
 import GigActionsCell from "./actions"
 import { Id } from "@/convex/_generated/dataModel"
 

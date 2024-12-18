@@ -6,7 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 
-import { GigList } from "./_components/gig-list";
+// import { GigList } from "./_components/gig-list";
 import { Separator } from "@/components/ui/separator";
 
 import { GigData, columns } from "./_components/columns";

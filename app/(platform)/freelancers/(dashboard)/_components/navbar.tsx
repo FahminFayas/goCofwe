@@ -1,13 +1,13 @@
 "use client";
 
-import { SignInButton, SignUpButton, UserButton, useClerk } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { SearchInput } from "./search-input";
 import { Button } from "@/components/ui/button";
-import { useApiMutation } from "@/hooks/use-api-mutation";
+// import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 import * as React from "react"
 import Link from "next/link"
