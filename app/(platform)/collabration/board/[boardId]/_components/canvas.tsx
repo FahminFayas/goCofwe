@@ -515,8 +515,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
                         } else {
                             history.undo();
                         }
-                        break;
                     }
+                    break;
                 }
                 case "ArrowUp":
                     offset = { x: 0, y: -MOVE_OFFSET };
@@ -538,13 +538,13 @@ export const Canvas = ({ boardId }: CanvasProps) => {
                     break;
             }
         }
-
+    
         document.addEventListener("keydown", onKeyDown);
-
         return () => {
             document.removeEventListener("keydown", onKeyDown);
         };
-    }, [history]);
+    }, [canvasState.mode, duplicateLayers, moveSelectedLayers, history]);
+    
 
     return (
         <main className="h-full w-full relative bg-neutral-100 touch-none">
