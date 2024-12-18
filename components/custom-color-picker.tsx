@@ -1,5 +1,4 @@
 "use client";
-
 import { forwardRef, useMemo, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { cn, colorToCss } from "@/lib/utils";
@@ -15,9 +14,10 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { useDebouncyEffect } from "use-debouncy";
 import { Color } from "@/types/canvas";
+
 type DebouncedPickerProps = {
-    color: string; // Assuming color is a hex string like "#ffffff"
-    onChange: (value: string) => void; // Callback function expecting a string
+    color: string;
+    onChange: (value: string) => void;
 };
 
 interface ColorPickerProps {
@@ -32,7 +32,16 @@ const CustomColorPicker = forwardRef<
     Omit<ButtonProps, "value" | "onChange" | "onBlur"> & ColorPickerProps
 >(
     (
-        { disabled, value, lastUsedColor, onChange, onBlur, name, className, ...props },
+        { 
+            disabled, 
+            value, 
+            lastUsedColor, 
+            onChange, 
+            onBlur, 
+            name, 
+            className, 
+            ...props 
+        },
         forwardedRef
     ) => {
         const ref = useForwardedRef(forwardedRef);
@@ -40,7 +49,7 @@ const CustomColorPicker = forwardRef<
 
         const parsedValue = useMemo(() => {
             return value || colorToCss(lastUsedColor);
-        }, [value]);
+        }, [value, lastUsedColor]); // Added lastUsedColor to dependency array
 
         return (
             <Popover onOpenChange={setOpen} open={open}>
@@ -55,12 +64,9 @@ const CustomColorPicker = forwardRef<
                         size="icon"
                         variant="outline"
                     >
-                        <Image
-                            className="rounded-full"
-                            src="/color-picker.png"
-                            alt="Empty"
-                            height={40}
-                            width={40}
+                        <div 
+                            className="rounded-full w-10 h-10" 
+                            style={{ backgroundColor: parsedValue }}
                         />
                     </Button>
                 </PopoverTrigger>
@@ -70,7 +76,11 @@ const CustomColorPicker = forwardRef<
                         className="mt-2"
                         maxLength={7}
                         onChange={(e) => {
-                            onChange(e?.currentTarget?.value);
+                            const inputValue = e.currentTarget.value;
+                            // Validate hex color format
+                            if (/^#?([0-9A-Fa-f]{3}){1,2}$/.test(inputValue)) {
+                                onChange(inputValue.startsWith('#') ? inputValue : `#${inputValue}`);
+                            }
                         }}
                         ref={ref}
                         value={parsedValue}
@@ -88,7 +98,6 @@ const DebouncedPicker = ({ color, onChange }: DebouncedPickerProps) => {
 
     return <HexColorPicker color={value} onChange={setValue} />;
 };
-  
 
 CustomColorPicker.displayName = "ColorPicker";
 
