@@ -11,7 +11,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
+// import Image from "next/image";
 import { useDebouncyEffect } from "use-debouncy";
 import { Color } from "@/types/canvas";
 
