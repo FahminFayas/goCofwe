@@ -1,30 +1,30 @@
 "use client";
 
-import { toast } from "sonner";
-import { Link2, Pencil, Trash2 } from "lucide-react";
 import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu";
 
-import { ConfirmModal } from "@/components/confirm-modal";
 import {
     DropdownMenu,
     DropdownMenuTrigger,
     DropdownMenuContent,
     DropdownMenuItem,
-    // DropdownMenuSeparator,
+    DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { api } from "@/convex/_generated/api";
+import { Link2, Pencil, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { useApiMutation } from "@/hooks/use-api-mutation";
-import { Button } from "@/components/ui/button";
+import { api } from "@/convex/_generated/api";
+import { ConfirmModal } from "./confirm-modal";
+import { Button } from "./ui/button";
 import { useRenameModal } from "@/store/use-rename-modal";
 
-interface ActionsProps {
+interface ActionProps {
     children: React.ReactNode;
     side?: DropdownMenuContentProps["side"];
     sideOffset?: DropdownMenuContentProps["sideOffset"];
     alignOffset?: DropdownMenuContentProps["alignOffset"];
     id: string;
     title: string;
-};
+}
 
 export const Actions = ({
     children,
@@ -32,50 +32,50 @@ export const Actions = ({
     sideOffset,
     id,
     title,
-}: ActionsProps) => {
+    alignOffset,
+}: ActionProps) => {
     const { onOpen } = useRenameModal();
-    const { mutate, pending } = useApiMutation(api.gig.remove);
 
-    const onCopyLink = () => {
-        navigator.clipboard.writeText(
-            `${window.location.origin}/gig/${id}`,
-        )
-            .then(() => toast.success("Link copied"))
-            .catch(() => toast.error("Failed to copy link"))
-    };
+    const { mutate, pending } = useApiMutation(api.board.remove);
 
     const onDelete = () => {
         mutate({ id })
-            .then(() => toast.success("Board deleted"))
+            .then(() => toast.success("Board deleted!"))
             .catch(() => toast.error("Failed to delete board"));
     };
 
+    const onCopyLink = () => {
+        navigator.clipboard
+            .writeText(`${window.location.origin}/collabration/board/${id}`)
+            .then(() => toast.success("Link copied!"))
+            .catch(() => toast.error("Failed to copy link"));
+    };
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                {children}
-            </DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
             <DropdownMenuContent
-    onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-    side={side}
-    sideOffset={sideOffset}
-    className="w-60"
->
-
+                onClick={(e) => e.stopPropagation()}
+                side={side}
+                sideOffset={sideOffset}
+                align="end"
+                className="w-50"
+                alignOffset={alignOffset}
+            >
                 <DropdownMenuItem
+                    className="p-2 cursor-pointer"
                     onClick={onCopyLink}
-                    className="p-3 cursor-pointer"
                 >
                     <Link2 className="h-4 w-4 mr-2" />
                     Copy board link
                 </DropdownMenuItem>
                 <DropdownMenuItem
+                    className="p-2 cursor-pointer"
                     onClick={() => onOpen(id, title)}
-                    className="p-3 cursor-pointer"
                 >
                     <Pencil className="h-4 w-4 mr-2" />
                     Rename
                 </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <ConfirmModal
                     header="Delete board?"
                     description="This will delete the board and all of its contents."
@@ -84,7 +84,7 @@ export const Actions = ({
                 >
                     <Button
                         variant="ghost"
-                        className="p-3 cursor-pointer text-sm w-full justify-start font-normal"
+                        className="p-2 cursor-pointer text-rose-600 text-sm w-full justify-start font-normal"
                     >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Delete
