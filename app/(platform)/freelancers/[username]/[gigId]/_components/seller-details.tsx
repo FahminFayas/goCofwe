@@ -16,7 +16,12 @@ interface SellerProps {
     lastFulFilmentTime: number | undefined;
     languages: Doc<"languages">[];
 }
-
+// interface SellerDetailsProps {
+//     seller: UserWithCountryType;
+//     reviews: Doc<"reviews">[];
+//     lastFulFilmentTime?: number;
+//     languages: Doc<"languages">[];
+// }
 export const SellerDetails = ({
     seller,
     reviews,

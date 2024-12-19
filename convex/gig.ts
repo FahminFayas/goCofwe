@@ -1,9 +1,15 @@
 import { v } from "convex/values";
 
-import { internalMutation, mutation, query } from "./_generated/server";
-import { Id } from "./_generated/dataModel";
-
+import { mutation, query } from "./_generated/server";
+import { Id, Doc } from "./_generated/dataModel";
+import { UserWithCountryType } from "../types";
 // internal mutations - https://github.com/get-convex/convex-stripe-demo/blob/main/convex/payments.ts
+
+type GigWithSellerType = Doc<"gigs"> & {
+    seller: UserWithCountryType;
+    lastFulfilment?: Doc<"orders">;
+    images: (Doc<"gigMedia"> & { url: string })[];
+};
 
 export const create = mutation({
     args: {
@@ -47,53 +53,38 @@ export const get = query({
     args: { id: v.id("gigs") },
     handler: async (ctx, args) => {
         const gig = await ctx.db.get(args.id);
-        if (gig === null) {
-            throw new Error("Gig not found");
+        if (!gig) {
+            return null;
         }
-        const seller = await ctx.db.get(gig.sellerId as Id<"users">);
 
+        const seller = await ctx.db.get(gig.sellerId as Id<"users">);
         if (!seller) {
             throw new Error("Seller not found");
         }
 
+        // Get country (might be null)
         const country = await ctx.db.query("countries")
             .withIndex("by_userId", (q) => q.eq("userId", seller._id))
             .unique();
 
-        // if (country === null) {
-        //     throw new Error("Country not found");
-        // }
-
-        // get languages
+        // Get languages
         const languages = await ctx.db.query("languages")
             .withIndex("by_userId", (q) => q.eq("userId", seller._id))
             .collect();
 
-        const sellerWithCountryAndLanguages = {
+        const sellerWithCountryAndLanguages: UserWithCountryType = {
             ...seller,
-            country: country,
-            languages: languages,
+            country,
+            languages,
         };
 
-        const gigWithSeller = {
-            ...gig,
-            seller: sellerWithCountryAndLanguages
-        };
-
-        // get last fulfilment
+        // Get last fulfilment
         const lastFulfilment = await ctx.db.query("orders")
             .withIndex("by_gigId", (q) => q.eq("gigId", gig._id))
             .order("desc")
             .first();
 
-
-        const gigWithSellerAndLastFulfilment = {
-            ...gigWithSeller,
-            lastFulfilment: lastFulfilment,
-        };
-
-
-        // get images
+        // Get images
         const images = await ctx.db.query("gigMedia")
             .withIndex("by_gigId", (q) => q.eq("gigId", gig._id))
             .collect();
@@ -106,12 +97,14 @@ export const get = query({
             return { ...image, url: imageUrl };
         }));
 
-        const gigWithSellerAndLastFulfilmentAndImages = {
-            ...gigWithSellerAndLastFulfilment,
+        const fullGig: GigWithSellerType = {
+            ...gig,
+            seller: sellerWithCountryAndLanguages,
+            lastFulfilment: lastFulfilment || undefined,
             images: imagesWithUrls,
         };
 
-        return gigWithSellerAndLastFulfilmentAndImages;
+        return fullGig;
     },
 });
 
