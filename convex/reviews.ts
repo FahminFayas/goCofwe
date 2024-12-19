@@ -1,6 +1,8 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { ExpressionOrValue } from "convex/server";
+// import { ExpressionOrValue } from "convex/server";
+import { Doc, Id } from "./_generated/dataModel";
+import { ImageWithUrlType, ReviewFullType, UserWithCountryType } from "../types";
 
 export const getByGig = query({
     args: { gigId: v.id("gigs") },
@@ -107,13 +109,7 @@ export const getBySellerName = query({
             .withIndex("by_sellerId", (q) => q.eq("sellerId", seller._id))
             .collect();
 
-        // if (!reviews) {
-        //     throw new Error("Reviews not found");
-        // }
-
-        // for each review, get the order
         const reviewsFullType = await Promise.all(reviews.map(async (review) => {
-
             const gig = await ctx.db.query("gigs")
                 .filter((q) => q.eq(q.field("_id"), review.gigId))
                 .unique();
@@ -140,13 +136,11 @@ export const getBySellerName = query({
                 .withIndex("by_gigId", (q) => q.eq("gigId", gig._id))
                 .collect();
 
-            if (!offers) {
-                throw new Error("Offers not found");
-            }
+            const imageWithUrl: ImageWithUrlType = {
+                ...image,
+                url: imageUrl
+            };
 
-            const imageWithUrl = { ...image, url: imageUrl };
-
-            // get author country
             const author = await ctx.db.query("users")
                 .filter((q) => q.eq(q.field("_id"), review.authorId))
                 .unique();
@@ -155,24 +149,31 @@ export const getBySellerName = query({
                 throw new Error("Author not found");
             }
 
+            // Get author's country
             const country = await ctx.db.query("countries")
-                .withIndex("by_userId", (q) => q.eq("userId", seller._id))
+                .withIndex("by_userId", (q) => q.eq("userId", author._id))
                 .unique();
 
-            // if (!country) {
-            //     throw new Error("Country not found");
-            // }
+            // Get author's languages
+            const languages = await ctx.db.query("languages")
+                .withIndex("by_userId", (q) => q.eq("userId", author._id))
+                .collect();
 
-            return {
+            const authorWithCountry: UserWithCountryType = {
+                ...author,
+                country,
+                languages
+            };
+
+            const fullReview: ReviewFullType = {
                 ...review,
                 gig,
                 image: imageWithUrl,
                 offers,
-                author: {
-                    ...author,
-                    country: "India",
-                },
-            }
+                author: authorWithCountry
+            };
+
+            return fullReview;
         }));
 
         return reviewsFullType;
