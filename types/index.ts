@@ -12,8 +12,15 @@ export type FullGigType = Doc<"gigs"> & {
     seller: Doc<"users">;
 }
 
-export type MessageWithUserType = Doc<"messages"> & {
-    user: Doc<"users">
+export type MessageWithUserType = {
+    user: Doc<"users">;
+} & Doc<"messages">;
+
+export type ConversationType = {
+    currentUser: Doc<"users">;
+    otherUser: Doc<"users">;
+    conversation: Doc<"conversations">;
+    messagesWithUsers: MessageWithUserType[];
 };
 
 export type GigWithImageType = Doc<"gigs"> & {

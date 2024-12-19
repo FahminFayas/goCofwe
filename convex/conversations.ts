@@ -1,8 +1,19 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { Id } from "./_generated/dataModel";
-import { api } from "./_generated/api";
-import { getCurrentUser } from "./users";
+
+
+import { Doc, Id } from "./_generated/dataModel";
+
+type MessageWithUser = Doc<"messages"> & {
+    user: Doc<"users">;
+};
+
+type ConversationResponse = {
+    currentUser: Doc<"users">;
+    otherUser: Doc<"users">;
+    conversation: Doc<"conversations">;
+    messagesWithUsers: MessageWithUser[];
+};
 
 export const getByUser = query({
     handler: async (ctx) => {
@@ -106,27 +117,29 @@ export const getConversation = query({
     }
 });
 
+
+
+
 export const getOrCreateConversation = mutation({
     args: { otherUsername: v.string() },
-    handler: async (ctx, args) => {
+    handler: async (ctx, args): Promise<ConversationResponse> => {
         const identity = await ctx.auth.getUserIdentity();
 
         if (!identity) {
             throw new Error("Unauthorized");
         }
 
-        // current user
         const currentUser = await ctx.db
             .query("users")
             .withIndex("by_token", (q) =>
                 q.eq("tokenIdentifier", identity.tokenIdentifier)
             )
             .unique();
+
         if (!currentUser) {
             throw new Error("Couldn't authenticate user");
         }
 
-        // other user
         const otherUser = await ctx.db
             .query("users")
             .withIndex("by_username", (q) => q.eq("username", args.otherUsername))
@@ -159,30 +172,40 @@ export const getOrCreateConversation = mutation({
             });
 
             conversation = await ctx.db.get(conversationId);
+            
+            if (!conversation) {
+                throw new Error("Failed to create conversation");
+            }
         }
 
         const messages = await ctx.db
             .query("messages")
-            .filter((q) => q.eq(q.field("conversationId"), conversation?._id))
+            .filter((q) => q.eq(q.field("conversationId"), conversation._id))
             .collect();
 
-        const messagesWithUsersRelation = messages.map(async (message: any) => {
-            const user = await ctx.db.query("users")
-                .filter((q: any) => q.eq(q.field("_id"), message.userId))
-                .unique();
-            return {
-                ...message,
-                user
-            }
-        });
+        const messagesWithUsers = await Promise.all(
+            messages.map(async (message) => {
+                const user = await ctx.db
+                    .query("users")
+                    .filter((q) => q.eq(q.field("_id"), message.userId))
+                    .unique();
 
-        const messagesWithUsers = await Promise.all(messagesWithUsersRelation);
+                if (!user) {
+                    throw new Error("Message user not found");
+                }
+
+                return {
+                    ...message,
+                    user,
+                } as MessageWithUser;
+            })
+        );
 
         return {
             currentUser,
             otherUser,
             conversation,
-            messagesWithUsers
+            messagesWithUsers,
         };
-    }
+    },
 });
