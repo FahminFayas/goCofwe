@@ -36,7 +36,7 @@ export const pay = action({
         });
 
         // const domain = `${process.env.NEXT_PUBLIC_HOSTING_URL}/freelancers`;
-        const domain = `http://localhost:3000/freelancers`;
+        const domain = `https://go-cofwe.vercel.app/freelancers`;
 
         const price = await stripe.prices.retrieve(args.priceId);
 

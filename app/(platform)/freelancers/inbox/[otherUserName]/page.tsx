@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Doc } from "@/convex/_generated/dataModel";
+// import { Doc } from "@/convex/_generated/dataModel";
 import Body from "./_components/body";
 import Form from "./_components/form";
 import { ConversationType } from "@/types";

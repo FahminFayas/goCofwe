@@ -110,14 +110,14 @@ export const createStripe = action({
             await ctx.runMutation(internal.users.setStripeAccountId, { userId: user._id, stripeAccountId: accountId });
         }
 
-        console.log("Hosting URL:", "http://localhost:3000");
+        console.log("Hosting URL:", "https://go-cofwe.vercel.app");
 
         const accountLink = await stripe.accountLinks.create({
             account: accountId,
             // refresh_url: `${process.env.NEXT_PUBLIC_HOSTING_URL}/freelancers`,
             // return_url: `${process.env.NEXT_PUBLIC_HOSTING_URL}/freelancers/stripe-account-setup-complete/${user._id}`,
-            refresh_url: `http://localhost:3000/freelancers`,
-            return_url: `http://localhost:3000/freelancers/stripe-account-setup-complete/${user._id}`,
+            refresh_url: `https://go-cofwe.vercel.app/freelancers`,
+            return_url: `https://go-cofwe.vercel.app/freelancers/stripe-account-setup-complete/${user._id}`,
             type: 'account_onboarding',
         });
         
