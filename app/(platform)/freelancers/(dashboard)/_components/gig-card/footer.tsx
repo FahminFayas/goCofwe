@@ -65,12 +65,12 @@ export const Footer = ({
                     disabled && "cursor-not-allowed opacity-75"
                 )}
             >
-                <Heart
+                {/* <Heart
                     className={cn(
                         "h-4 w-4",
                         isFavorite && "fill-blue-600 text-blue-600"
                     )}
-                />
+                /> */}
             </button>
         </div>
     );

@@ -1,4 +1,4 @@
-import { Doc, Id } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "../convex/_generated/dataModel";
 
 export type ImageWithUrlType = Doc<"gigMedia"> & {
     url: string

@@ -4,8 +4,8 @@
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { formatDistanceToNow } from "date-fns";
-import { Actions } from "@/components/actions";
-import { MoreHorizontal } from "lucide-react";
+// import { Actions } from "@/components/actions";
+// import { MoreHorizontal } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ConvexImage } from "@/components/convex-image";
 
@@ -86,7 +86,7 @@ export const GigCard = ({
 
                     <Overlay />
 
-                    <Actions
+                    {/* <Actions
                         id={id}
                         title={title}
                         side="right"
@@ -98,7 +98,7 @@ export const GigCard = ({
                                 className="text-black opacity-75 hover:opacity-100 transition-opacity"
                             />
                         </button>
-                    </Actions>
+                    </Actions> */}
                 </div>
                 <Footer
                     isFavorite={isFavorite}

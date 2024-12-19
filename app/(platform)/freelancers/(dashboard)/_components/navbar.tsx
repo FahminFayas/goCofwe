@@ -98,7 +98,7 @@ const Navbar = () => {
 
                 {currentUser && (
                     <>
-                        <TooltipProvider text="Favorites">
+                        {/* <TooltipProvider text="Favorites">
                             <Button
                                 asChild
                                 variant={favorites ? "secondary" : "ghost"}
@@ -115,7 +115,7 @@ const Navbar = () => {
                                     <Heart className={favorites ? "fill-black" : ""} />
                                 </Link>
                             </Button>
-                        </TooltipProvider>
+                        </TooltipProvider> */}
 
                         <TooltipProvider text="Inbox" >
                             <Button onClick={onClickInbox} variant={"ghost"}>

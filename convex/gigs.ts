@@ -12,6 +12,7 @@ type FullGigType = Doc<"gigs"> & {
     seller: Doc<"users">;
 };
 
+
 export const get = query({
     args: {
         search: v.optional(v.string()),
@@ -20,11 +21,11 @@ export const get = query({
     },
     handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity();
+        const title = args.search?.trim();
+        
+        let gigs = [];
 
-        const title = args.search as string;
-
-        let gigs: Doc<"gigs">[] = [];
-
+        // Get initial gigs based on search or get all published gigs
         if (title) {
             gigs = await ctx.db
                 .query("gigs")
@@ -40,38 +41,78 @@ export const get = query({
                 .collect();
         }
 
-        if (args.filter !== undefined) {
-            const filter = args.filter as string;
+        // Apply category/subcategory filter if provided
+        if (args.filter) {
+            const filterTerm = args.filter.trim();
+            
+            // First try exact match
             const subcategory = await ctx.db
                 .query("subcategories")
-                .withIndex("by_name", (q) => q.eq("name", filter))
+                .withIndex("by_name", (q) => q.eq("name", filterTerm))
                 .unique();
 
-            gigs = gigs.filter((gig) => gig.subcategoryId === subcategory?._id);
+            if (!subcategory) {
+                // If no exact match, try case-insensitive search
+                const allSubcategories = await ctx.db
+                    .query("subcategories")
+                    .collect();
+                
+                const matchingSubcategory = allSubcategories.find(
+                    sub => sub.name.toLowerCase() === filterTerm.toLowerCase()
+                );
+
+                if (matchingSubcategory) {
+                    gigs = gigs.filter(gig => gig.subcategoryId === matchingSubcategory._id);
+                } else {
+                    // If still no match, try partial matches
+                    const matchingSubcategories = allSubcategories.filter(
+                        sub => sub.name.toLowerCase().includes(filterTerm.toLowerCase())
+                    );
+                    
+                    if (matchingSubcategories.length > 0) {
+                        const subcategoryIds = new Set(matchingSubcategories.map(sub => sub._id));
+                        gigs = gigs.filter(gig => subcategoryIds.has(gig.subcategoryId));
+                    }
+                }
+            } else {
+                gigs = gigs.filter(gig => gig.subcategoryId === subcategory._id);
+            }
         }
 
-        let gigsWithFavorite = await Promise.all(gigs.map(async (gig) => {
-            const favorite = identity ? await ctx.db
-                .query("userFavorites")
-                .withIndex("by_user_gig", (q) =>
-                    q.eq("userId", gig.sellerId)
-                        .eq("gigId", gig._id)
-                )
-                .unique() : null;
+        // Handle favorites if user is authenticated
+        if (identity) {
+            const gigsWithFavorite = await Promise.all(gigs.map(async (gig) => {
+                const favorite = await ctx.db
+                    .query("userFavorites")
+                    .withIndex("by_user_gig", (q) =>
+                        q.eq("userId", gig.sellerId)
+                            .eq("gigId", gig._id)
+                    )
+                    .unique();
+                
+                return {
+                    ...gig,
+                    favorited: !!favorite,
+                };
+            }));
 
-            return {
-                ...gig,
-                favorited: !!favorite,
-            };
-        }));
+            // Filter by favorites if requested
+            if (args.favorites === "true") {
+                gigs = gigsWithFavorite.filter(gig => gig.favorited);
+            } else {
+                gigs = gigsWithFavorite;
+            }
+        }
 
-        const fullGigs = await Promise.all(gigsWithFavorite.map(async (gig) => {
+        // Add additional gig data
+        const gigsWithFullData = await Promise.all(gigs.map(async (gig) => {
             const image = await ctx.db
                 .query("gigMedia")
                 .withIndex("by_gigId", (q) => q.eq("gigId", gig._id))
                 .first();
 
-            const seller = await ctx.db.query("users")
+            const seller = await ctx.db
+                .query("users")
                 .filter((q) => q.eq(q.field("_id"), gig.sellerId))
                 .unique();
 
@@ -79,29 +120,26 @@ export const get = query({
                 throw new Error("Seller not found");
             }
 
-            const reviews = await ctx.db.query("reviews")
+            const reviews = await ctx.db
+                .query("reviews")
                 .withIndex("by_gigId", (q) => q.eq("gigId", gig._id))
                 .collect();
 
-            const offer = await ctx.db.query("offers")
+            const offer = await ctx.db
+                .query("offers")
                 .withIndex("by_gigId", (q) => q.eq("gigId", gig._id))
                 .first();
-
-            if (!offer) {
-                throw new Error("Offer not found");
-            }
 
             return {
                 ...gig,
                 storageId: image?.storageId,
                 seller,
                 reviews,
-                offer,
-                favorited: gig.favorited
-            } satisfies FullGigType;
+                offer
+            };
         }));
 
-        return fullGigs;
+        return gigsWithFullData;
     },
 });
 
