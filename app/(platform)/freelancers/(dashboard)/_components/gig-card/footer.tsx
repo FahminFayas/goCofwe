@@ -1,6 +1,6 @@
 import { Doc } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
-import { Heart, Star } from "lucide-react";
+import { Star } from "lucide-react";
 
 interface FooterProps {
     isFavorite: boolean;
@@ -15,7 +15,6 @@ interface FooterProps {
 };
 
 export const Footer = ({
-    isFavorite,
     title,
     ownerLabel,
     createdAtLabel,

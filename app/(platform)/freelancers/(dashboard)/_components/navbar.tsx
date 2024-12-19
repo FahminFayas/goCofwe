@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 // import { useEffect, useState } from "react";
 
 import * as React from "react"
-import Link from "next/link"
+// import Link from "next/link"
 
 import {
     Dialog,
@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog"
 import { Loading } from "@/components/auth/loading";
 import { useQuery } from "convex/react";
-import { Filter, Heart, MessageCircle } from "lucide-react";
+import { Filter, MessageCircle } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 // import { ListItem } from "./list-item";
 import { TooltipProvider } from "./tooltip-provider";
@@ -32,7 +32,9 @@ const Navbar = () => {
     const categories = useQuery(api.categories.get);
     const currentUser = useQuery(api.users.getCurrentUser);
     const searchParams = useSearchParams();
-    const favorites = searchParams.get("favorites");
+
+    // const favorites = searchParams.get("favorites");
+
     const filter = searchParams.get("filter");
 
     const router = useRouter();
