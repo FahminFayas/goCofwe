@@ -1,5 +1,16 @@
 import { v } from "convex/values";
 import { query } from "./_generated/server";
+import { Doc, Id } from "./_generated/dataModel";
+
+// Define the FullGigType directly in the Convex backend
+// since we can't import from the frontend types
+type FullGigType = Doc<"gigs"> & {
+    storageId?: Id<"_storage"> | undefined;
+    favorited: boolean;
+    offer: Doc<"offers">;
+    reviews: Doc<"reviews">[];
+    seller: Doc<"users">;
+};
 
 export const get = query({
     args: {
@@ -12,14 +23,13 @@ export const get = query({
 
         const title = args.search as string;
 
-        let gigs = [];
+        let gigs: Doc<"gigs">[] = [];
 
         if (title) {
             gigs = await ctx.db
                 .query("gigs")
                 .withSearchIndex("search_title", (q) =>
-                    q
-                        .search("title", title)
+                    q.search("title", title)
                 )
                 .collect();
         } else {
@@ -30,45 +40,32 @@ export const get = query({
                 .collect();
         }
 
-        // check if there is filter
         if (args.filter !== undefined) {
             const filter = args.filter as string;
-            // get subcategory by name
             const subcategory = await ctx.db
                 .query("subcategories")
                 .withIndex("by_name", (q) => q.eq("name", filter))
                 .unique();
 
-            const filteredGigs = gigs.filter((gig) => gig.subcategoryId === subcategory?._id);
-            gigs = filteredGigs;
+            gigs = gigs.filter((gig) => gig.subcategoryId === subcategory?._id);
         }
 
-        let gigsWithFavoriteRelation = gigs;
+        let gigsWithFavorite = await Promise.all(gigs.map(async (gig) => {
+            const favorite = identity ? await ctx.db
+                .query("userFavorites")
+                .withIndex("by_user_gig", (q) =>
+                    q.eq("userId", gig.sellerId)
+                        .eq("gigId", gig._id)
+                )
+                .unique() : null;
 
-        if (identity !== null) {
-            gigsWithFavoriteRelation = await Promise.all(gigs.map((gig) => {
-                return ctx.db
-                    .query("userFavorites")
-                    .withIndex("by_user_gig", (q) =>
-                        q
-                            .eq("userId", gig.sellerId)
-                            .eq("gigId", gig._id)
-                    )
-                    .unique()
-                    .then((favorite) => {
-                        console.log("favorite: ", favorite);
-                        return {
-                            ...gig,
-                            favorited: !!favorite,
-                        };
-                    });
-            }));
-        }
+            return {
+                ...gig,
+                favorited: !!favorite,
+            };
+        }));
 
-        //const gigsWithFavorite = await Promise.all(gigsWithFavoriteRelation);
-
-
-        const gigsWithImages = await Promise.all(gigsWithFavoriteRelation.map(async (gig) => {
+        const fullGigs = await Promise.all(gigsWithFavorite.map(async (gig) => {
             const image = await ctx.db
                 .query("gigMedia")
                 .withIndex("by_gigId", (q) => q.eq("gigId", gig._id))
@@ -90,19 +87,23 @@ export const get = query({
                 .withIndex("by_gigId", (q) => q.eq("gigId", gig._id))
                 .first();
 
+            if (!offer) {
+                throw new Error("Offer not found");
+            }
+
             return {
                 ...gig,
                 storageId: image?.storageId,
                 seller,
                 reviews,
-                offer
-            };
+                offer,
+                favorited: gig.favorited
+            } satisfies FullGigType;
         }));
 
-        return gigsWithImages;
+        return fullGigs;
     },
 });
-
 
 export const getBySellerName = query({
     args: {
