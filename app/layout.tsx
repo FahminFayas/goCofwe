@@ -18,7 +18,7 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
-    template: `%s | ${siteConfig.name}`, //My-Orgnization | Taskify
+    template: `%s | ${siteConfig.name}`, //My-Orgnization | goCofwe
   },
   description: siteConfig.description,
   icons: [
