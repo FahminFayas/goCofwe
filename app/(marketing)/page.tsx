@@ -42,7 +42,7 @@ const MarketingPage = () => {
             </div>
         </div>
         <div className={cn("text-sm md:text-xl text-neutral-400 mt-4 max-w-xs md:max-w-2xl text-center mx-auto", textFont.className)}>
-        Collaborate, build teams, and tackle projects of any scale with ease. Whether you're a solo freelancer or part of a dynamic team, goCofwe empowers you to achieve more—seamlessly, efficiently, and together.
+        Collaborate, build teams, and tackle projects of any scale with ease. Whether you are a solo freelancer or part of a dynamic team, goCofwe empowers you to achieve more—seamlessly, efficiently, and together.
         </div>
         <Button className="mt-6" size="lg" asChild>
             <Link href="/freelancers">Go To Freelancer&apos;s Place</Link>
