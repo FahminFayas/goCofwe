@@ -74,9 +74,9 @@ const GigPage = ({
                     <div className="border border-zinc-400 p-4 space-y-2 rounded-2xl">
                         <div className="flex space-x-2">
                             <Info />
-                            <h4>Delivery preferences</h4>
+                            <h4>Payment preferences</h4>
                         </div>
-                        <p>Please communicate any preferences or concerns regarding the utilization of AI tools in the fulfillment and/or delivery of your request.</p>
+                        <p>Please communicate any preferences or concerns regarding the payment process directly with the freelancer(s) before initiating the payment. This includes discussing preferred payment methods, schedules, milestones, and any specific terms to ensure clarity and mutual agreement.</p>
                     </div>
                     <SellerDetails
                         seller={gig.seller}
