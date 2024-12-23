@@ -1,3 +1,4 @@
+// app\(platform)\freelancers\[username]\[gigId]\_components\offers\content.tsx
 import { Loading } from "@/components/auth/loading"
 import { Button } from "@/components/ui/button"
 import { api } from "@/convex/_generated/api"
@@ -30,18 +31,31 @@ export const Content = ({
 
     const handleOrderNow = async () => {
         try {
-            const url = await orderNow({ priceId: offer.stripePriceId, title: offer.title, sellerId });
-            if (!url) throw new Error("Error: Stripe session error.");
-            router.push(url);
+          if (!currentUser) {
+            toast.error("Please log in to place an order");
+            return;
+          }
+      
+          const url = await orderNow({
+            priceId: offer.stripePriceId,
+            title: offer.title,
+            sellerId,
+            offerId: offer._id,
+            gigId: offer.gigId,
+            buyerId: currentUser._id,
+            tier: offer.tier  // Add this line
+          });
+      
+          if (!url) throw new Error("Error: Stripe session error.");
+          router.push(url);
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error("An unknown error occurred.");
-            }
+          if (error instanceof Error) {
+            toast.error(error.message);
+          } else {
+            toast.error("An unknown error occurred.");
+          }
         }
-        
-    }
+      };
 
     const handleSendMessage = () => {
         router.push(`/freelancers/inbox/${seller.username}`);

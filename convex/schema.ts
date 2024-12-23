@@ -1,3 +1,4 @@
+// convex\schema.ts
 import { v } from "convex/values";
 import { defineTable, defineSchema } from "convex/server";
 
@@ -98,15 +99,23 @@ export default defineSchema({
     .index("by_gigId", ["gigId"])
     .index("by_tier", ["tier"])
     .index("by_gigId_tier", ["gigId", "tier"]),
-  orders: defineTable({
-    offerId: v.id("offers"),
-    gigId: v.id("gigs"),
-    buyerId: v.id("users"),
-    fulfillmentStatus: v.string(),
-    fulfilmentTime: v.optional(v.number()),
-  })
-    .index("by_buyerId", ["buyerId"])
-    .index("by_gigId", ["gigId"]),
+    orders: defineTable({
+      offerId: v.id("offers"),
+      gigId: v.id("gigs"),
+      buyerId: v.id("users"),
+      sellerId: v.id("users"),
+      fulfillmentStatus: v.string(),
+      price: v.number(),
+      title: v.string(),
+      delivery_days: v.number(),
+      revisions: v.number(),
+      paymentStatus: v.string(),
+      stripeSessionId: v.string(),
+      orderDate: v.number(),
+    })
+      .index("by_buyerId", ["buyerId"])
+      .index("by_gigId", ["gigId"])
+      .index("by_sellerId", ["sellerId"]),
   gigMedia: defineTable({
     storageId: v.id("_storage"),
     format: v.string(),
