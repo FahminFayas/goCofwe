@@ -81,7 +81,7 @@ const GigPage = ({
                     <SellerDetails
                         seller={gig.seller}
                         reviews={reviews}
-                        lastFulFilmentTime={gig.lastFulfilment?.fulfilmentTime}
+                        lastFulFilmentTime={gig.lastFulfilment?.orderDate}
                         languages={gig.seller.languages}
                     />
                     {/* 
