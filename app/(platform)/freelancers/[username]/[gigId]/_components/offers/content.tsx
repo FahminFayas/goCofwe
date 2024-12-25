@@ -81,7 +81,7 @@ export const Content = ({
             </div>
             {(currentUser?._id !== sellerId) && (
                 <>
-                    <Button className="w-full" onClick={handleOrderNow}>Order Now</Button>
+                    <Button className="w-full" onClick={handleOrderNow}>Pay Now</Button>
                     <Button className="w-full" onClick={handleSendMessage} variant={"ghost"}>Send Message</Button>
                 </>
             )}

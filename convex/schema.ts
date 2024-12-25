@@ -116,6 +116,11 @@ export default defineSchema({
       .index("by_buyerId", ["buyerId"])
       .index("by_gigId", ["gigId"])
       .index("by_sellerId", ["sellerId"]),
+      webhookLogs: defineTable({
+        stage: v.string(),
+        data: v.any(),
+        timestamp: v.number()
+      }),
   gigMedia: defineTable({
     storageId: v.id("_storage"),
     format: v.string(),
