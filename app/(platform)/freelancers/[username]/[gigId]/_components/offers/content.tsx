@@ -36,7 +36,7 @@ export const Content = ({
             return;
           }
       
-          const url = await orderNow({
+          const result = await orderNow({
             priceId: offer.stripePriceId,
             title: offer.title,
             sellerId,
@@ -46,8 +46,8 @@ export const Content = ({
             tier: offer.tier  // Add this line
           });
       
-          if (!url) throw new Error("Error: Stripe session error.");
-          router.push(url);
+          if (!result.url) throw new Error("Error: Stripe session error.");
+          router.push(result.url);
         } catch (error: unknown) {
           if (error instanceof Error) {
             toast.error(error.message);
