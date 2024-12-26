@@ -2,11 +2,8 @@
 
 import { useMutation } from "convex/react";
 import { GigList } from "./_components/gig-list";
-// import { useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
-// import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
-// import { useRouter } from "next/navigation";
 
 interface DashboardProps {
     searchParams: {
@@ -20,12 +17,17 @@ const Dashboard = ({
     searchParams
 }: DashboardProps) => {
     const store = useMutation(api.users.store);
+
+    // Log searchParams to check if they are passed correctly
     useEffect(() => {
+        console.log("Search Params:", searchParams);
+        
         const storeUser = async () => {
             await store({});
-        }
+        };
         storeUser();
-    }, [store])
+    }, [store, searchParams]);
+
     return (
         <GigList
             query={searchParams}
