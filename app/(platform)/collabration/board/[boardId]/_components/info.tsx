@@ -51,7 +51,7 @@ const Info = ({ boardId, exportAsPng }: InfoProps) => {
                                 font.className
                             )}
                         >
-                            Collabration
+                            goCofwe
                         </span>
                     </Link>
                 </Button>
