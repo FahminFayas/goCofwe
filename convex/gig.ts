@@ -80,7 +80,7 @@ export const get = query({
 
         // Get last fulfilment
         const lastFulfilment = await ctx.db.query("orders")
-            .withIndex("by_gigId", (q) => q.eq("gigId", gig._id))
+            .withIndex("by_sellerId", (q) => q.eq("sellerId", gig.sellerId))
             .order("desc")
             .first();
 

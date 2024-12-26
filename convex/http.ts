@@ -32,7 +32,10 @@ http.route({
         stripeSignature: signature,
       });
 
-      return new Response(null, { status: 200 });
+      return new Response(
+        JSON.stringify({ message: 'Webhook processed successfully' }),
+        { status: 200 }
+      );      
     } catch (error) {
       console.error("Webhook Error:", error);
       return new Response(

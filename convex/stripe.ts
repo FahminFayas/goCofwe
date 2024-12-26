@@ -1,3 +1,4 @@
+// convex\stripe.ts
 import { v } from "convex/values";
 import { action, internalAction, ActionCtx } from "./_generated/server";
 import Stripe from "stripe";
@@ -10,13 +11,7 @@ interface OrderData {
   gigId: Id<"gigs">;
   buyerId: Id<"users">;
   sellerId: Id<"users">;
-  fulfillmentStatus: string;
-  price: number;
-  title: string;
-  delivery_days: number;
-  revisions: number;
   paymentStatus: string;
-  stripeSessionId: string;
   orderDate: number;
 }
 
@@ -122,6 +117,8 @@ export const pay = action({
 });
 
 // Webhook handler with type annotations
+// convex/stripe.ts
+// convex/stripe.ts
 export const handleStripeWebhook = internalAction({
   args: {
     rawBody: v.string(),
@@ -141,7 +138,8 @@ export const handleStripeWebhook = internalAction({
         signatureLength: args.stripeSignature.length,
       });
 
-      const event = stripe.webhooks.constructEvent(
+      // Use constructEventAsync to handle the event in an asynchronous context
+      const event = await stripe.webhooks.constructEventAsync(
         args.rawBody,
         args.stripeSignature,
         process.env.STRIPE_WEBHOOK_SECRET!
@@ -154,7 +152,7 @@ export const handleStripeWebhook = internalAction({
 
       if (event.type === "checkout.session.completed") {
         const session = event.data.object as Stripe.Checkout.Session;
-        
+
         console.log("Processing completed session:", {
           sessionId: session.id,
           metadata: session.metadata,
@@ -183,15 +181,10 @@ export const handleStripeWebhook = internalAction({
           gigId: session.metadata.gigId as Id<"gigs">,
           buyerId: session.metadata.buyerId as Id<"users">,
           sellerId: session.metadata.sellerId as Id<"users">,
-          fulfillmentStatus: "pending",
-          price: offer.price,
-          title: offer.title,
-          delivery_days: offer.delivery_days,
-          revisions: offer.revisions,
           paymentStatus: "paid",
-          stripeSessionId: session.id,
           orderDate: Date.now(),
         };
+        
 
         console.log("Creating order with data:", orderData);
 

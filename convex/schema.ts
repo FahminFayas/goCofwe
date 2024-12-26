@@ -101,17 +101,11 @@ export default defineSchema({
     .index("by_gigId_tier", ["gigId", "tier"]),
     orders: defineTable({
       offerId: v.id("offers"),
-      gigId: v.id("gigs"),
       buyerId: v.id("users"),
       sellerId: v.id("users"),
-      fulfillmentStatus: v.string(),
-      price: v.number(),
-      title: v.string(),
-      delivery_days: v.number(),
-      revisions: v.number(),
       paymentStatus: v.string(),
-      stripeSessionId: v.string(),
       orderDate: v.number(),
+      gigId: v.id("gigs"),
     })
       .index("by_buyerId", ["buyerId"])
       .index("by_gigId", ["gigId"])
