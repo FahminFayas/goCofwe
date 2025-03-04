@@ -6,11 +6,11 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import {
     NavigationMenu,
-    NavigationMenuContent,
+    //NavigationMenuContent,
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
-    NavigationMenuTrigger,
+    //NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { Button } from "@/components/ui/button"
@@ -21,26 +21,26 @@ import { useRouter } from "next/navigation"
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 
-const components: { title: string; href: string; description: string }[] = [
-    {
-        title: "Orders",
-        href: "/docs/primitives/alert-dialog",
-        description:
-            "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-    {
-        title: "Gigs",
-        href: "/docs/primitives/hover-card",
-        description:
-            "For sighted users to preview content available behind a link.",
-    },
-    {
-        title: "Profile",
-        href: "/profile",
-        description:
-            "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-    }
-]
+// const components: { title: string; href: string; description: string }[] = [
+//     {
+//         title: "Orders",
+//         href: "/docs/primitives/alert-dialog",
+//         description:
+//             "A modal dialog that interrupts the user with important content and expects a response.",
+//     },
+//     {
+//         title: "Gigs",
+//         href: "/docs/primitives/hover-card",
+//         description:
+//             "For sighted users to preview content available behind a link.",
+//     },
+//     {
+//         title: "Profile",
+//         href: "/profile",
+//         description:
+//             "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+//     }
+// ]
 
 export const SellerNavbar = () => {
     const currentUser = useQuery(api.users.getCurrentUser);
