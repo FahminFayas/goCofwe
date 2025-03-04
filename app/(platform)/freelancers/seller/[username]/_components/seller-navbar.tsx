@@ -76,7 +76,7 @@ export const SellerNavbar = () => {
                                 </NavigationMenuLink>
                             </Link>
                         </NavigationMenuItem>
-                        <NavigationMenuItem>
+                        {/* <NavigationMenuItem>
                             <NavigationMenuTrigger>My business</NavigationMenuTrigger>
                             <NavigationMenuContent>
                                 <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
@@ -87,7 +87,7 @@ export const SellerNavbar = () => {
                                                 href="/"
                                             >
                                                 {/* <Image className="h-6 w-6" /> */}
-                                                <div className="mb-2 mt-4 text-lg font-medium">
+                                                {/* <div className="mb-2 mt-4 text-lg font-medium">
                                                     Orders
                                                 </div>
                                                 <p className="text-sm leading-tight text-muted-foreground">
@@ -104,9 +104,9 @@ export const SellerNavbar = () => {
                                     </ListItem>
                                 </ul>
                             </NavigationMenuContent>
-                        </NavigationMenuItem>
-                        <NavigationMenuItem>
-                            <NavigationMenuTrigger>Advertising & Growth</NavigationMenuTrigger>
+                        </NavigationMenuItem> */}
+                        {/* <NavigationMenuItem> */}
+                            {/* <NavigationMenuTrigger>Advertising & Growth</NavigationMenuTrigger>
                             <NavigationMenuContent>
                                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                                     {components.map((component) => (
@@ -120,14 +120,14 @@ export const SellerNavbar = () => {
                                     ))}
                                 </ul>
                             </NavigationMenuContent>
-                        </NavigationMenuItem>
-                        <NavigationMenuItem>
+                        </NavigationMenuItem> */}
+                        {/* <NavigationMenuItem>
                             <Link href="/docs" legacyBehavior passHref>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                     Analytics
                                 </NavigationMenuLink>
                             </Link>
-                        </NavigationMenuItem>
+                        </NavigationMenuItem> */}
                     </NavigationMenuList>
                 </NavigationMenu>
             </div>
